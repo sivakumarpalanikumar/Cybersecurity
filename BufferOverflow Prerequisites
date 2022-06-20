@@ -115,3 +115,43 @@ Hello Guys!sivakumar@sivakumar-desktop:~$
 
 
 ******************________________________**************************______________________________********************************************************___________________________********************************************
+
+
+
+
+
+
+
+
+sivakumar@sivakumar-desktop:~$ nasm helloworld.nasm -f elf64 -o helloworld.o
+sivakumar@sivakumar-desktop:~$ ld helloworld.o -o helloworld
+sivakumar@sivakumar-desktop:~$ file helloworld
+helloworld: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, not stripped
+sivakumar@sivakumar-desktop:~$ chmod +x helloworld
+sivakumar@sivakumar-desktop:~$ ./helloworld
+Hello, world!
+sivakumar@sivakumar-desktop:~$
+
+
+sivakumar@sivakumar-desktop:~$ cat helloworld.nasm
+section .text
+   global _start
+
+_start:
+
+    mov rax,1
+    mov rdi,1
+    mov rsi,msg
+    mov rdx,len
+    syscall
+
+    mov rax,60
+    mov rdi,20
+    syscall
+
+section .data
+        msg db 'Hello, world!', 0xa
+        len equ $ - msg
+
+
+
