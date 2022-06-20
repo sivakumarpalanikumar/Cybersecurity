@@ -1,2 +1,2 @@
 # Cybersecurity
-These are the things I explored in Cybersecurity.
+These are the things I explored related with Cybersecurity.
