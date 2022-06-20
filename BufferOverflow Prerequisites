@@ -1,0 +1,113 @@
+About 32 bit and 64 bit
+
+Generally High level code------->Assembly code
+hexadecimal------->binary(10101)-------->CPU
+
+
+Let's visualize this process using sample c program created using GCC and Vim editor.
+
+Preprocess - Processed file
+
+
+
+Compilation
+  presprocessed file to assembly
+  
+  
+assembly to output relocatable
+(nasm)
+
+
+
+linking 
+relocatable->linker->executable
+
+
+
+
+
+
+
+sivakumar@sivakumar-desktop:~$ vim simple.c
+sivakumar@sivakumar-desktop:~$ gcc simple.c -o simple
+sivakumar@sivakumar-desktop:~$ ./simple
+Hello Guys!sivakumar@sivakumar-desktop:~$ locate stdio.h
+
+
+
+sivakumar@sivakumar-desktop:~$ locate stdio.h
+/snap/mysql-workbench-community/9/usr/include/stdio.h
+/snap/mysql-workbench-community/9/usr/include/x86_64-linux-gnu/bits/stdio.h
+/usr/include/stdio.h
+/usr/include/c++/9/tr1/stdio.h
+/usr/include/x86_64-linux-gnu/bits/stdio.h
+/usr/lib/x86_64-linux-gnu/perl/5.30.0/CORE/nostdio.h
+
+
+
+
+
+sivakumar@sivakumar-desktop:~$ gcc -S simple.c
+sivakumar@sivakumar-desktop:~$ cat simple.s
+    .file    "simple.c"
+    .text
+    .section    .rodata
+.LC0:
+    .string    "Hello Guys!"
+    .text
+    .globl    main
+    .type    main, @function
+main:
+.LFB0:
+    .cfi_startproc
+    endbr64
+    pushq    %rbp
+    .cfi_def_cfa_offset 16
+    .cfi_offset 6, -16
+    movq    %rsp, %rbp
+    .cfi_def_cfa_register 6
+    leaq    .LC0(%rip), %rdi
+    movl    $0, %eax
+    call    printf@PLT
+    movl    $0, %eax
+    popq    %rbp
+    .cfi_def_cfa 7, 8
+    ret
+    .cfi_endproc
+.LFE0:
+    .size    main, .-main
+    .ident    "GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0"
+    .section    .note.GNU-stack,"",@progbits
+    .section    .note.gnu.property,"a"
+    .align 8
+    .long     1f - 0f
+    .long     4f - 1f
+    .long     5
+0:
+    .string     "GNU"
+1:
+    .align 8
+    .long     0xc0000002
+    .long     3f - 2f
+2:
+    .long     0x3
+3:
+    .align 8
+4:
+
+
+
+sivakumar@sivakumar-desktop:~$ gcc -c simple.c
+sivakumar@sivakumar-desktop:~$ file simple.o
+simple.o: ELF 64-bit LSB relocatable, x86-64, version 1 (SYSV), not stripped
+sivakumar@sivakumar-desktop:~$ gcc simple.c -o simple
+sivakumar@sivakumar-desktop:~$ file simple
+simple: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=e92550ed39127c01f1085860c0dbbd9a86000cc0, for GNU/Linux 3.2.0, not stripped
+sivakumar@sivakumar-desktop:~$
+
+sivakumar@sivakumar-desktop:~$ chmod +x simple
+sivakumar@sivakumar-desktop:~$ ./simple
+Hello Guys!sivakumar@sivakumar-desktop:~$
+
+
+******************________________________**************************______________________________********************************************************___________________________********************************************
