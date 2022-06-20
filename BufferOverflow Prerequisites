@@ -1,23 +1,19 @@
 About 32 bit and 64 bit
 
 Generally High level code------->Assembly code
-hexadecimal------->binary(10101)-------->CPU
+hexadecimal------->binary(10101)-------->CPU  ie....
 
-
-Let's visualize this process using sample c program created using GCC and Vim editor.
 
 Preprocess - Processed file
-
-
+           then
 
 Compilation
   presprocessed file to assembly
-  
+           then
   
 assembly to output relocatable
 (nasm)
-
-
+           then
 
 linking 
 relocatable->linker->executable
@@ -25,6 +21,8 @@ relocatable->linker->executable
 
 
 
+
+Let's visualize this process using sample c program created using GCC and Vim editor.
 
 
 
