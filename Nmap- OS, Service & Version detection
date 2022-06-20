@@ -1,0 +1,192 @@
+Nmap- OS, Service & Version detection  commands execution with output
+
+
+
+
+
+sivakumar@sivakumar-desktop:~$ nmap -F x.x.x.x
+Starting Nmap 7.80 ( https://nmap.org ) at 2022-06-20 12:14 IST
+Nmap scan report for sivakumar-desktop (x.x.x.x)
+Host is up (0.00018s latency).
+Not shown: 99 closed ports
+PORT   STATE SERVICE
+80/tcp open  http
+
+Nmap done: 1 IP address (1 host up) scanned in 0.04 seconds
+sivakumar@sivakumar-desktop:~$ /usr/share/nmap/nmap.services
+bash: /usr/share/nmap/nmap.services: No such file or directory
+sivakumar@sivakumar-desktop:~$ /usr/share/nmap/nmap-services
+bash: /usr/share/nmap/nmap-services: Permission denied
+sivakumar@sivakumar-desktop:~$ grep -E "^http" /usr/share/nmap/nmap-services
+http    80/sctp    0.000000    # www-http | www | World Wide Web HTTP
+http    80/tcp    0.484143    # World Wide Web HTTP
+http    80/udp    0.035767    # World Wide Web HTTP
+http-mgmt    280/tcp    0.001844
+http-mgmt    280/udp    0.000379
+https    443/sctp    0.000000    # http protocol over TLS/SSL
+https    443/tcp    0.208669    # secure http (SSL)
+https    443/udp    0.010840
+http-alt    591/tcp    0.000075    # FileMaker, Inc. - HTTP Alternate | FileMaker, Inc. - HTTP Alternate (see Port 80)
+http-alt    591/udp    0.000527    # FileMaker, Inc. - HTTP Alternate
+http-rpc-epmap    593/tcp    0.001242    # HTTP RPC Ep Map
+http-rpc-epmap    593/udp    0.022933    # HTTP RPC Ep Map
+httpx    4180/tcp    0.000000
+httpx    4180/udp    0.000000    # HTTPX
+http-alt    8000/tcp    0.009710    # irdmi | A common alternative http port | iRDMI
+http    8008/tcp    0.006843    # http-alt | IBM HTTP server | HTTP Alternate
+http-alt    8008/udp    0.000330    # HTTP Alternate
+http-proxy    8080/tcp    0.042052    # http-alt | Common HTTP proxy/second web server port | HTTP Alternate (see port 80)
+http-alt    8080/udp    0.000000    # HTTP Alternate (see port 80)
+https-alt    8443/tcp    0.009986    # pcsync-https | Common alternative https port | PCsync HTTPS
+http-wmap    8990/tcp    0.000000    # webmail HTTP service
+http-wmap    8990/udp    0.000000    # webmail HTTP service
+https-wmap    8991/tcp    0.000000    # webmail HTTPS service
+https-wmap    8991/udp    0.000000    # webmail HTTPS service
+sivakumar@sivakumar-desktop:~$
+
+
+sivakumar@sivakumar-desktop:~$ nmap -p 80 x.x.x.x
+Starting Nmap 7.80 ( https://nmap.org ) at 2022-06-20 12:21 IST
+Nmap scan report for sivakumar-desktop (x.x.x.x)
+Host is up (0.00017s latency).
+
+PORT   STATE SERVICE
+80/tcp open  http
+
+
+
+sivakumar@sivakumar-desktop:~$ nmap -p 70- 80 x.x.x.x
+Starting Nmap 7.80 ( https://nmap.org ) at 2022-06-20 12:23 IST
+Nmap scan report for sivakumar-desktop (x.x.x.x)
+Host is up (0.00019s latency).
+Not shown: 65465 closed ports
+PORT   STATE SERVICE
+80/tcp open  http
+
+
+sivakumar@sivakumar-desktop:~$ nmap -p- x.x.x.x
+Starting Nmap 7.80 ( https://nmap.org ) at 2022-06-20 12:25 IST
+Nmap scan report for sivakumar-desktop (x.x.x.x)
+Host is up (0.00014s latency).
+Not shown: 65534 closed ports
+PORT   STATE SERVICE
+80/tcp open  http
+
+Nmap done: 1 IP address (1 host up) scanned in 1.88 seconds
+
+
+
+sivakumar@sivakumar-desktop:~$ nmap -p T:80,U:53 x.x.x.x
+Starting Nmap 7.80 ( https://nmap.org ) at 2022-06-20 12:29 IST
+Nmap scan report for sivakumar-desktop (x.x.x.x)
+Host is up (0.00014s latency).
+
+PORT   STATE SERVICE
+80/tcp open  http
+
+Nmap done: 1 IP address (1 host up) scanned in 0.04 seconds
+
+
+
+sivakumar@sivakumar-desktop:~$ nmap -p http x.x.x.x
+Starting Nmap 7.80 ( https://nmap.org ) at 2022-06-20 12:32 IST
+Nmap scan report for sivakumar-desktop (x.x.x.x)
+Host is up (0.00018s latency).
+
+PORT     STATE  SERVICE
+80/tcp   open   http
+8008/tcp closed http
+
+
+
+
+sivakumar@sivakumar-desktop:~$ nmap -p http* x.x.x.x
+Starting Nmap 7.80 ( https://nmap.org ) at 2022-06-20 12:33 IST
+Nmap scan report for sivakumar-desktop (x.x.x.x)
+Host is up (0.000099s latency).
+
+PORT     STATE  SERVICE
+80/tcp   open   http
+280/tcp  closed http-mgmt
+443/tcp  closed https
+591/tcp  closed http-alt
+593/tcp  closed http-rpc-epmap
+4180/tcp closed httpx
+8000/tcp closed http-alt
+8008/tcp closed http
+8080/tcp closed http-proxy
+8443/tcp closed https-alt
+8990/tcp closed http-wmap
+8991/tcp closed https-wmap
+
+Nmap done: 1 IP address (1 host up) scanned in 0.04 seconds
+
+
+
+
+sivakumar@sivakumar-desktop:~$ nmap -p 80 -T0 x.x.x.x
+Starting Nmap 7.80 ( https://nmap.org ) at 2022-06-20 12:36 IST
+
+sivakumar@sivakumar-desktop:~$ nmap -p 80 -T5 x.x.x.x --host-timeout 6
+Starting Nmap 7.80 ( https://nmap.org ) at 2022-06-20 12:40 IST
+Nmap scan report for sivakumar-desktop (x.x.x.x)
+Host is up (0.00013s latency).
+
+PORT   STATE SERVICE
+80/tcp open  http
+
+Nmap done: 1 IP address (1 host up) scanned in 0.04 seconds
+sivakumar@sivakumar-desktop:~$
+
+
+
+
+Nmap done: 1 IP address (1 host up) scanned in 0.04 seconds
+sivakumar@sivakumar-desktop:~$ nmap -p 80 -T5 x.x.x.x --max-retries 6
+Starting Nmap 7.80 ( https://nmap.org ) at 2022-06-20 12:41 IST
+Nmap scan report for sivakumar-desktop (x.x.x.x)
+Host is up (0.00013s latency).
+
+PORT   STATE SERVICE
+80/tcp open  http
+
+Nmap done: 1 IP address (1 host up) scanned in 0.04 seconds
+sivakumar@sivakumar-desktop:~$ nmap -p 80 -T5 x.x.x.x --max-parallelism 10
+Starting Nmap 7.80 ( https://nmap.org ) at 2022-06-20 12:42 IST
+Nmap scan report for sivakumar-desktop (x.x.x.x)
+Host is up (0.00014s latency).
+
+PORT   STATE SERVICE
+80/tcp open  http
+
+Nmap done: 1 IP address (1 host up) scanned in 0.04 seconds
+sivakumar@sivakumar-desktop:~$ nmap -F x.x.x.x -oA nmap_output
+Starting Nmap 7.80 ( https://nmap.org ) at 2022-06-20 12:44 IST
+Nmap scan report for sivakumar-desktop (x.x.x.x)
+Host is up (0.00018s latency).
+Not shown: 99 closed ports
+PORT   STATE SERVICE
+80/tcp open  http
+
+Nmap done: 1 IP address (1 host up) scanned in 0.04 seconds
+
+
+
+
+
+sivakumar@sivakumar-desktop:~$ ls | grep nmap
+nmap_output.gnmap
+nmap_output.nmap
+nmap_output.xml
+
+
+
+sivakumar@sivakumar-desktop:~$ cat nmap_output.nmap
+# Nmap 7.80 scan initiated Mon Jun 20 12:44:46 2022 as: nmap -F -oA nmap_output x.x.x.x
+Nmap scan report for sivakumar-desktop (x.x.x.x)
+Host is up (0.00018s latency).
+Not shown: 99 closed ports
+PORT   STATE SERVICE
+80/tcp open  http
+
+# Nmap done at Mon Jun 20 12:44:46 2022 -- 1 IP address (1 host up) scanned in 0.04 seconds
