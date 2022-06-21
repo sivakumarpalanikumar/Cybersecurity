@@ -401,6 +401,215 @@ gdb-peda$
 
 
 
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$4$$$$$$$$$$$$$$
+
+
+                                                           Stack visualization using Assembly language
+                                                           
+                                                           
+                                                           
+                                                          
+                                                          
+         sivakumar@sivakumar-desktop:~$ cat stack.c
+#include<stdio.h>
+void func()
+{
+    int x=300;
+    int y=400;
+}
+
+int main()
+{
+    func();
+    return 0;
+}
+
+sivakumar@sivakumar-desktop:~$ gcc stack.c -o stack
+sivakumar@sivakumar-desktop:~$ gdb stack
+GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from stack...
+(No debugging symbols found in stack)
+gdb-peda$ break main
+Breakpoint 1 at 0x1142
+gdb-peda$ run
+Starting program: /home/sivakumar/stack
+[----------------------------------registers-----------------------------------]
+RAX: 0x555555555142 (<main>:    endbr64)
+RBX: 0x555555555160 (<__libc_csu_init>:    endbr64)
+RCX: 0x555555555160 (<__libc_csu_init>:    endbr64)
+RDX: 0x7fffffffe0d8 --> 0x7fffffffe3fc ("SHELL=/bin/bash")
+RSI: 0x7fffffffe0c8 --> 0x7fffffffe3e6 ("/home/sivakumar/stack")
+RDI: 0x1
+RBP: 0x0
+RSP: 0x7fffffffdfd8 --> 0x7ffff7de4083 (<__libc_start_main+243>:    mov    edi,eax)
+RIP: 0x555555555142 (<main>:    endbr64)
+R8 : 0x0
+R9 : 0x7ffff7fe0d60 (<_dl_fini>:    endbr64)
+R10: 0x3
+R11: 0x0
+R12: 0x555555555040 (<_start>:    endbr64)
+R13: 0x7fffffffe0c0 --> 0x1
+R14: 0x0
+R15: 0x0
+EFLAGS: 0x246 (carry PARITY adjust ZERO sign trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x55555555513f <func+22>:    nop
+   0x555555555140 <func+23>:    pop    rbp
+   0x555555555141 <func+24>:    ret    
+=> 0x555555555142 <main>:    endbr64
+   0x555555555146 <main+4>:    push   rbp
+   0x555555555147 <main+5>:    mov    rbp,rsp
+   0x55555555514a <main+8>:    mov    eax,0x0
+   0x55555555514f <main+13>:    call   0x555555555129 <func>
+[------------------------------------stack-------------------------------------]
+0000| 0x7fffffffdfd8 --> 0x7ffff7de4083 (<__libc_start_main+243>:    mov    edi,eax)
+0008| 0x7fffffffdfe0 --> 0x7ffff7ffc620 --> 0x50d1300000000
+0016| 0x7fffffffdfe8 --> 0x7fffffffe0c8 --> 0x7fffffffe3e6 ("/home/sivakumar/stack")
+0024| 0x7fffffffdff0 --> 0x100000000
+0032| 0x7fffffffdff8 --> 0x555555555142 (<main>:    endbr64)
+0040| 0x7fffffffe000 --> 0x555555555160 (<__libc_csu_init>:    endbr64)
+0048| 0x7fffffffe008 --> 0xa2e8a419cf795345
+0056| 0x7fffffffe010 --> 0x555555555040 (<_start>:    endbr64)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+
+Breakpoint 1, 0x0000555555555142 in main ()
+gdb-peda$ stepi
+[----------------------------------registers-----------------------------------]
+RAX: 0x555555555142 (<main>:    endbr64)
+RBX: 0x555555555160 (<__libc_csu_init>:    endbr64)
+RCX: 0x555555555160 (<__libc_csu_init>:    endbr64)
+RDX: 0x7fffffffe0d8 --> 0x7fffffffe3fc ("SHELL=/bin/bash")
+RSI: 0x7fffffffe0c8 --> 0x7fffffffe3e6 ("/home/sivakumar/stack")
+RDI: 0x1
+RBP: 0x0
+RSP: 0x7fffffffdfd8 --> 0x7ffff7de4083 (<__libc_start_main+243>:    mov    edi,eax)
+RIP: 0x555555555146 (<main+4>:    push   rbp)
+R8 : 0x0
+R9 : 0x7ffff7fe0d60 (<_dl_fini>:    endbr64)
+R10: 0x3
+R11: 0x0
+R12: 0x555555555040 (<_start>:    endbr64)
+R13: 0x7fffffffe0c0 --> 0x1
+R14: 0x0
+R15: 0x0
+EFLAGS: 0x246 (carry PARITY adjust ZERO sign trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x555555555140 <func+23>:    pop    rbp
+   0x555555555141 <func+24>:    ret    
+   0x555555555142 <main>:    endbr64
+=> 0x555555555146 <main+4>:    push   rbp
+   0x555555555147 <main+5>:    mov    rbp,rsp
+   0x55555555514a <main+8>:    mov    eax,0x0
+   0x55555555514f <main+13>:    call   0x555555555129 <func>
+   0x555555555154 <main+18>:    mov    eax,0x0
+[------------------------------------stack-------------------------------------]
+0000| 0x7fffffffdfd8 --> 0x7ffff7de4083 (<__libc_start_main+243>:    mov    edi,eax)
+0008| 0x7fffffffdfe0 --> 0x7ffff7ffc620 --> 0x50d1300000000
+0016| 0x7fffffffdfe8 --> 0x7fffffffe0c8 --> 0x7fffffffe3e6 ("/home/sivakumar/stack")
+0024| 0x7fffffffdff0 --> 0x100000000
+0032| 0x7fffffffdff8 --> 0x555555555142 (<main>:    endbr64)
+0040| 0x7fffffffe000 --> 0x555555555160 (<__libc_csu_init>:    endbr64)
+0048| 0x7fffffffe008 --> 0xa2e8a419cf795345
+0056| 0x7fffffffe010 --> 0x555555555040 (<_start>:    endbr64)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x0000555555555146 in main ()
+gdb-peda$ stepi
+[----------------------------------registers-----------------------------------]
+RAX: 0x555555555142 (<main>:    endbr64)
+RBX: 0x555555555160 (<__libc_csu_init>:    endbr64)
+RCX: 0x555555555160 (<__libc_csu_init>:    endbr64)
+RDX: 0x7fffffffe0d8 --> 0x7fffffffe3fc ("SHELL=/bin/bash")
+RSI: 0x7fffffffe0c8 --> 0x7fffffffe3e6 ("/home/sivakumar/stack")
+RDI: 0x1
+RBP: 0x0
+RSP: 0x7fffffffdfd0 --> 0x0
+RIP: 0x555555555147 (<main+5>:    mov    rbp,rsp)
+R8 : 0x0
+R9 : 0x7ffff7fe0d60 (<_dl_fini>:    endbr64)
+R10: 0x3
+R11: 0x0
+R12: 0x555555555040 (<_start>:    endbr64)
+R13: 0x7fffffffe0c0 --> 0x1
+R14: 0x0
+R15: 0x0
+EFLAGS: 0x246 (carry PARITY adjust ZERO sign trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x555555555141 <func+24>:    ret    
+   0x555555555142 <main>:    endbr64
+   0x555555555146 <main+4>:    push   rbp
+=> 0x555555555147 <main+5>:    mov    rbp,rsp
+   0x55555555514a <main+8>:    mov    eax,0x0
+   0x55555555514f <main+13>:    call   0x555555555129 <func>
+   0x555555555154 <main+18>:    mov    eax,0x0
+   0x555555555159 <main+23>:    pop    rbp
+[------------------------------------stack-------------------------------------]
+0000| 0x7fffffffdfd0 --> 0x0
+0008| 0x7fffffffdfd8 --> 0x7ffff7de4083 (<__libc_start_main+243>:    mov    edi,eax)
+0016| 0x7fffffffdfe0 --> 0x7ffff7ffc620 --> 0x50d1300000000
+0024| 0x7fffffffdfe8 --> 0x7fffffffe0c8 --> 0x7fffffffe3e6 ("/home/sivakumar/stack")
+0032| 0x7fffffffdff0 --> 0x100000000
+0040| 0x7fffffffdff8 --> 0x555555555142 (<main>:    endbr64)
+0048| 0x7fffffffe000 --> 0x555555555160 (<__libc_csu_init>:    endbr64)
+0056| 0x7fffffffe008 --> 0xa2e8a419cf795345
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x0000555555555147 in main ()
+gdb-peda$ set disassembly-flavor intel
+gdb-peda$ disassemble
+Dump of assembler code for function main:
+   0x0000555555555142 <+0>:    endbr64
+   0x0000555555555146 <+4>:    push   rbp
+=> 0x0000555555555147 <+5>:    mov    rbp,rsp
+   0x000055555555514a <+8>:    mov    eax,0x0
+   0x000055555555514f <+13>:    call   0x555555555129 <func>
+   0x0000555555555154 <+18>:    mov    eax,0x0
+   0x0000555555555159 <+23>:    pop    rbp
+   0x000055555555515a <+24>:    ret    
+End of assembler dump.
+gdb-peda$ quit
+sivakumar@sivakumar-desktop:~$ python3
+Python 3.8.10 (default, Mar 15 2022, 12:22:08)
+[GCC 9.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> hex(300)
+'0x12c'
+>>> hex(400)
+'0x190'
+>>>
+KeyboardInterrupt
+>>>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
