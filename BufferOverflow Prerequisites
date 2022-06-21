@@ -189,5 +189,227 @@ Hello, world!
 
 
 
+________________________************************_____________________________*************************************************_____________________________________
+
+
+
+                                                   BOF- Gdb & Immunity Debugger Intro | gdb, gdbtui, gdb-peda | 
+                                                   ____________________________________________________________
+                                                   ------------------------------------------------------------
+
+
+
+sivakumar@sivakumar-desktop:~$ gdb -q hello
+Reading symbols from hello...
+(No debugging symbols found in hello)
+
+(gdb) break main
+Breakpoint 1 at 0x1185
+(gdb) run
+Starting program: /home/sivakumar/hello
+
+Breakpoint 1, 0x0000555555555185 in main ()
+
+
+(gdb) info functions
+All defined functions:
+
+File ../argp/argp-fmtstream.h:
+266:    size_t __argp_fmtstream_point(argp_fmtstream_t);
+220:    int __argp_fmtstream_putc(argp_fmtstream_t, int);
+207:    int __argp_fmtstream_puts(argp_fmtstream_t, const char *);
+230:    size_t __argp_fmtstream_set_lmargin(argp_fmtstream_t, size_t);
+242:    size_t __argp_fmtstream_set_rmargin(argp_fmtstream_t, size_t);
+254:    size_t __argp_fmtstream_set_wmargin(argp_fmtstream_t, size_t);
+194:    size_t __argp_fmtstream_write(argp_fmtstream_t, const char *, size_t);
+
+File ../argp/argp.h:
+526:    void __argp_usage(const struct argp_state *);
+544:    int __option_is_end(const struct argp_option *);
+532:    int __option_is_short(const struct argp_option *);
+
+File ../bits/stdlib-bsearch.h:
+20:    
+    void *__GI_bsearch(const void *, const void *, size_t, size_t, __compar_fn_t);
+
+File ../csu/libc-start.c:
+
+
+(gdb) disassemble
+Dump of assembler code for function main:
+=> 0x0000555555555185 <+0>:    endbr64
+   0x0000555555555189 <+4>:    push   %rbp
+   0x000055555555518a <+5>:    mov    %rsp,%rbp
+   0x000055555555518d <+8>:    sub    $0x50,%rsp
+   0x0000555555555191 <+12>:    mov    %fs:0x28,%rax
+   0x000055555555519a <+21>:    mov    %rax,-0x8(%rbp)
+   0x000055555555519e <+25>:    xor    %eax,%eax
+   0x00005555555551a0 <+27>:    movl   $0x64,-0x44(%rbp)
+   0x00005555555551a7 <+34>:    movabs $0x6d49202620626447,%rax
+   0x00005555555551b1 <+44>:    movabs $0x44207974696e756d,%rdx
+   0x00005555555551bb <+54>:    mov    %rax,-0x40(%rbp)
+   0x00005555555551bf <+58>:    mov    %rdx,-0x38(%rbp)
+   0x00005555555551c3 <+62>:    movabs $0x2072656767756265,%rax
+   0x00005555555551cd <+72>:    movabs $0x6f72746e49,%rdx
+   0x00005555555551d7 <+82>:    mov    %rax,-0x30(%rbp)
+   0x00005555555551db <+86>:    mov    %rdx,-0x28(%rbp)
+   0x00005555555551df <+90>:    movq   $0x0,-0x20(%rbp)
+   0x00005555555551e7 <+98>:    movq   $0x0,-0x18(%rbp)
+   0x00005555555551ef <+106>:    movw   $0x0,-0x10(%rbp)
+   0x00005555555551f5 <+112>:    lea    -0x40(%rbp),%rax
+   0x00005555555551f9 <+116>:    mov    %rax,%rsi
+   0x00005555555551fc <+119>:    lea    0xe12(%rip),%rdi        # 0x555555556015
+--Type <RET> for more, q to quit, c to continue without paging--c
+   0x0000555555555203 <+126>:    mov    $0x0,%eax
+   0x0000555555555208 <+131>:    callq  0x555555555070 <printf@plt>
+   0x000055555555520d <+136>:    mov    -0x44(%rbp),%eax
+   0x0000555555555210 <+139>:    mov    %eax,%esi
+   0x0000555555555212 <+141>:    lea    0xe08(%rip),%rdi        # 0x555555556021
+   0x0000555555555219 <+148>:    mov    $0x0,%eax
+   0x000055555555521e <+153>:    callq  0x555555555070 <printf@plt>
+   0x0000555555555223 <+158>:    mov    $0x0,%eax
+   0x0000555555555228 <+163>:    mov    -0x8(%rbp),%rcx
+   0x000055555555522c <+167>:    xor    %fs:0x28,%rcx
+   0x0000555555555235 <+176>:    je     0x55555555523c <main+183>
+   0x0000555555555237 <+178>:    callq  0x555555555060 <__stack_chk_fail@plt>
+   0x000055555555523c <+183>:    leaveq
+   0x000055555555523d <+184>:    retq   
+End of assembler dump.
+(gdb) list
+1    in <built-in>
+
+
+(gdb) list
+1    in <built-in>
+(gdb) list 11
+6    in <built-in>
+
+
+
+
+
+sivakumar@sivakumar-desktop:~$ strace ./hello
+execve("./hello", ["./hello"], 0x7ffd50c1f2f0 /* 50 vars */) = 0
+brk(NULL)                               = 0x55f81573c000
+arch_prctl(0x3001 /* ARCH_??? */, 0x7fff0febf930) = -1 EINVAL (Invalid argument)
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=83599, ...}) = 0
+mmap(NULL, 83599, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f5149c90000
+close(3)                                = 0
+openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\300A\2\0\0\0\0\0"..., 832) = 832
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+pread64(3, "\4\0\0\0\20\0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0", 32, 848) = 32
+pread64(3, "\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\30x\346\264ur\f|Q\226\236i\253-'o"..., 68, 880) = 68
+fstat(3, {st_mode=S_IFREG|0755, st_size=2029592, ...}) = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f5149c8e000
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+pread64(3, "\4\0\0\0\20\0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0", 32, 848) = 32
+pread64(3, "\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\30x\346\264ur\f|Q\226\236i\253-'o"..., 68, 880) = 68
+mmap(NULL, 2037344, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f5149a9c000
+mmap(0x7f5149abe000, 1540096, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x22000) = 0x7f5149abe000
+mmap(0x7f5149c36000, 319488, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x19a000) = 0x7f5149c36000
+mmap(0x7f5149c84000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1e7000) = 0x7f5149c84000
+mmap(0x7f5149c8a000, 13920, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f5149c8a000
+close(3)                                = 0
+arch_prctl(ARCH_SET_FS, 0x7f5149c8f540) = 0
+mprotect(0x7f5149c84000, 16384, PROT_READ) = 0
+mprotect(0x55f814720000, 4096, PROT_READ) = 0
+mprotect(0x7f5149cd2000, 4096, PROT_READ) = 0
+munmap(0x7f5149c90000, 83599)           = 0
+fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0), ...}) = 0
+brk(NULL)                               = 0x55f81573c000
+brk(0x55f81575d000)                     = 0x55f81575d000
+write(1, "Topic is Gdb & Immunity Debugger"..., 50Topic is Gdb & Immunity Debugger IntroValue is 100) = 50
+exit_group(0)                           = ?
++++ exited with 0 +++
+
+
+
+
+
+
+
+
+
+
+sivakumar@sivakumar-desktop:~$ gdbtui -q hello
+sivakumar@sivakumar-desktop:~$ git clone https://github.com/longld/peda.git ~/peda
+Cloning into '/home/sivakumar/peda'...
+remote: Enumerating objects: 382, done.
+remote: Counting objects: 100% (9/9), done.
+remote: Compressing objects: 100% (7/7), done.
+remote: Total 382 (delta 2), reused 8 (delta 2), pack-reused 373
+Receiving objects: 100% (382/382), 290.84 KiB | 4.34 MiB/s, done.
+Resolving deltas: 100% (231/231), done.
+sivakumar@sivakumar-desktop:~$ gdb -q hello
+Reading symbols from hello...
+(No debugging symbols found in hello)
+(gdb) quit
+sivakumar@sivakumar-desktop:~$ echo "source ~/peda/peda.py" >> ~/.gdbinit
+sivakumar@sivakumar-desktop:~$ gdb -q hello
+Reading symbols from hello...
+(No debugging symbols found in hello)
+gdb-peda$ b main
+Breakpoint 1 at 0x1185
+gdb-peda$ run
+Starting program: /home/sivakumar/hello
+[----------------------------------registers-----------------------------------]
+RAX: 0x555555555185 (<main>:    endbr64)
+RBX: 0x555555555240 (<__libc_csu_init>:    endbr64)
+RCX: 0x555555555240 (<__libc_csu_init>:    endbr64)
+RDX: 0x7fffffffe0d8 --> 0x7fffffffe3fc ("SHELL=/bin/bash")
+RSI: 0x7fffffffe0c8 --> 0x7fffffffe3e6 ("/home/sivakumar/hello")
+RDI: 0x1
+RBP: 0x0
+RSP: 0x7fffffffdfd8 --> 0x7ffff7de4083 (<__libc_start_main+243>:    mov    edi,eax)
+RIP: 0x555555555185 (<main>:    endbr64)
+R8 : 0x0
+R9 : 0x7ffff7fe0d60 (<_dl_fini>:    endbr64)
+R10: 0x3
+R11: 0x0
+R12: 0x555555555080 (<_start>:    endbr64)
+R13: 0x7fffffffe0c0 --> 0x1
+R14: 0x0
+R15: 0x0
+EFLAGS: 0x246 (carry PARITY adjust ZERO sign trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x555555555182 <flag+25>:    nop
+   0x555555555183 <flag+26>:    pop    rbp
+   0x555555555184 <flag+27>:    ret    
+=> 0x555555555185 <main>:    endbr64
+   0x555555555189 <main+4>:    push   rbp
+   0x55555555518a <main+5>:    mov    rbp,rsp
+   0x55555555518d <main+8>:    sub    rsp,0x50
+   0x555555555191 <main+12>:    mov    rax,QWORD PTR fs:0x28
+[------------------------------------stack-------------------------------------]
+0000| 0x7fffffffdfd8 --> 0x7ffff7de4083 (<__libc_start_main+243>:    mov    edi,eax)
+0008| 0x7fffffffdfe0 --> 0x7ffff7ffc620 --> 0x50d1300000000
+0016| 0x7fffffffdfe8 --> 0x7fffffffe0c8 --> 0x7fffffffe3e6 ("/home/sivakumar/hello")
+0024| 0x7fffffffdff0 --> 0x100000000
+0032| 0x7fffffffdff8 --> 0x555555555185 (<main>:    endbr64)
+0040| 0x7fffffffe000 --> 0x555555555240 (<__libc_csu_init>:    endbr64)
+0048| 0x7fffffffe008 --> 0x9bd8d32c15f467a6
+0056| 0x7fffffffe010 --> 0x555555555080 (<_start>:    endbr64)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+
+Breakpoint 1, 0x0000555555555185 in main ()
+gdb-peda$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
